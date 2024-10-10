@@ -85,30 +85,36 @@ public class SSDPClient {
 
     /** Used to send SSDP packet */
     public void send(String data) throws IOException {
-        DatagramPacket dp = new DatagramPacket(data.getBytes(), data.length(), multicastGroup);
+        if(isDatagramSocketConnected()) {
+            DatagramPacket dp = new DatagramPacket(data.getBytes(), data.length(), multicastGroup);
 
-        datagramSocket.send(dp);
+            datagramSocket.send(dp);
+        }
     }
 
 
     /** Used to receive SSDP Response packet */
     public DatagramPacket responseReceive() throws IOException {
-        byte[] buf = new byte[1024];
-        DatagramPacket dp = new DatagramPacket(buf, buf.length);
+        if(isDatagramSocketConnected()) {
+            byte[] buf = new byte[1024];
+            DatagramPacket dp = new DatagramPacket(buf, buf.length);
 
-        datagramSocket.receive(dp);
+            datagramSocket.receive(dp);
 
-        return dp;
+            return dp;
+        }
     }
 
     /** Used to receive SSDP Multicast packet */
     public DatagramPacket multicastReceive() throws IOException {
-        byte[] buf = new byte[1024];
-        DatagramPacket dp = new DatagramPacket(buf, buf.length);
+        if(isMulticastSocketConnected()) {
+            byte[] buf = new byte[1024];
+            DatagramPacket dp = new DatagramPacket(buf, buf.length);
 
-        multicastSocket.receive(dp);
+            multicastSocket.receive(dp);
 
-        return dp;
+            return dp;
+        }
     }
 
 //    /** Starts the socket */
@@ -116,8 +122,16 @@ public class SSDPClient {
 //    
 //    }
 
+    public boolean isDatagramSocketConnected() {
+        return datagramSocket != null && datagramSocket.isConnected();
+    }
+
+    public boolean isMulticastSocketConnected() {
+        return multicastSocket != null && multicastSocket.isConnected();
+    }
+
     public boolean isConnected() {
-        return datagramSocket != null && multicastSocket != null && datagramSocket.isConnected() && multicastSocket.isConnected();
+        return isDatagramSocketConnected() && isMulticastSocketConnected();
     }
 
     /** Close the socket */

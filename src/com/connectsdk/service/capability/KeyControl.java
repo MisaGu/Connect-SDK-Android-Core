@@ -48,12 +48,18 @@ public interface KeyControl extends CapabilityMethods {
         NUM_9 (9),
 
         DASH (10),
-        ENTER (11);
+        ENTER (11),
+        MENU(12),
+        EXIT(13),
+        BLUE (14),
+        GREEN (15),
+        RED (16),
+        YELLOW (17);
 
         private final int code; 
 
         private static final KeyCode[] codes = {
-            NUM_0, NUM_1, NUM_2, NUM_3, NUM_4, NUM_5, NUM_6, NUM_7, NUM_8, NUM_9, DASH, ENTER
+            NUM_0, NUM_1, NUM_2, NUM_3, NUM_4, NUM_5, NUM_6, NUM_7, NUM_8, NUM_9, DASH, ENTER, MENU, EXIT, BLUE, GREEN, RED, YELLOW
         };
 
         KeyCode(int code) {
@@ -93,5 +99,6 @@ public interface KeyControl extends CapabilityMethods {
     public void ok(ResponseListener<Object> listener);
     public void back(ResponseListener<Object> listener);
     public void home(ResponseListener<Object> listener);
+    public void menu(ResponseListener<Object> listener);
     public void sendKeyCode(KeyCode keycode, ResponseListener<Object> listener);
 }
